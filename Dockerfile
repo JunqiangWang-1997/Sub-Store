@@ -3,12 +3,13 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app
 
-# 安装必要的系统依赖和pnpm
+# 安装必要的系统依赖和指定版本的pnpm
 RUN apk add --no-cache git python3 make g++ && \
-    npm install -g pnpm
+    npm install -g pnpm@10.14.0
 
-# 复制package文件
+# 复制package文件和patches
 COPY backend/package.json backend/pnpm-lock.yaml ./
+COPY backend/patches ./patches
 
 # 安装依赖，使用CI环境避免preinstall问题
 ENV CI=true
