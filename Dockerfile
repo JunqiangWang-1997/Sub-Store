@@ -30,10 +30,16 @@ WORKDIR /app
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S substore -u 1001
 
+# 安装生产环境需要的依赖
+RUN npm install -g pnpm@10.14.0
+
+# 复制package.json和安装生产依赖
+COPY --from=builder /app/package.json ./
+RUN pnpm install --production --ignore-scripts
+
 # 复制构建产物
 COPY --from=builder --chown=substore:nodejs /app/sub-store.min.js ./
 COPY --from=builder --chown=substore:nodejs /app/dist ./dist/
-COPY --from=builder --chown=substore:nodejs /app/package.json ./
 
 # 创建数据目录
 RUN mkdir -p /app/data && chown substore:nodejs /app/data

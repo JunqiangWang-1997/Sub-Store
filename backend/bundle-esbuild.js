@@ -9,17 +9,37 @@ const { build } = require('esbuild');
     ).version.trim();
 
     const artifacts = [
-        { src: 'src/main.js', dest: 'sub-store.min.js' },
+        { 
+            src: 'src/main.js', 
+            dest: 'sub-store.min.js',
+            platform: 'node',
+            format: 'cjs',
+            external: ['dotenv', 'express', 'body-parser', 'lodash'] // 保留这些关键依赖为外部模块
+        },
         {
             src: 'src/products/resource-parser.loon.js',
             dest: 'dist/sub-store-parser.loon.min.js',
+            platform: 'browser',
+            format: 'iife'
         },
         {
             src: 'src/products/cron-sync-artifacts.js',
             dest: 'dist/cron-sync-artifacts.min.js',
+            platform: 'browser',
+            format: 'iife'
         },
-        { src: 'src/products/sub-store-0.js', dest: 'dist/sub-store-0.min.js' },
-        { src: 'src/products/sub-store-1.js', dest: 'dist/sub-store-1.min.js' },
+        { 
+            src: 'src/products/sub-store-0.js', 
+            dest: 'dist/sub-store-0.min.js',
+            platform: 'browser',
+            format: 'iife'
+        },
+        { 
+            src: 'src/products/sub-store-1.js', 
+            dest: 'dist/sub-store-1.min.js',
+            platform: 'browser',
+            format: 'iife'
+        },
     ];
 
     for await (const artifact of artifacts) {
@@ -28,8 +48,9 @@ const { build } = require('esbuild');
             bundle: true,
             minify: true,
             sourcemap: false,
-            platform: 'browser',
-            format: 'iife',
+            platform: artifact.platform || 'browser',
+            format: artifact.format || 'iife',
+            external: artifact.external || [],
             outfile: artifact.dest,
         });
     }
