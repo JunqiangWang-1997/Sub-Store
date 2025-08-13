@@ -1,0 +1,33 @@
+# Sub-Store Docker
+
+node_modules
+npm-debug.log
+Dockerfile
+.dockerignore
+README.md
+.git
+.gitignore
+*.md
+.nyc_output
+.coverage
+.coverage.*
+
+# 开发文件
+gulpfile.babel.js
+dev-esbuild.js
+bundle.js
+bundle-esbuild.js
+*.spec.js
+test/
+
+# IDE
+.vscode
+.idea
+
+# 日志
+logs
+*.log
+
+# 临时文件
+*.tmp
+*.temp

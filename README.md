@@ -109,6 +109,36 @@ SUB_STORE_BACKEND_API_PORT=3000 pnpm run --parallel "/^dev:.*/"
 pnpm bundle:esbuild
 ```
 
+### Docker Deployment
+
+This project supports automated Docker image building through GitHub Actions.
+
+#### Online Build (Recommended)
+
+1. Push your code to GitHub repository
+2. GitHub Actions will automatically build multi-platform Docker images
+3. Images will be pushed to GitHub Container Registry (ghcr.io)
+
+#### Quick Deploy
+
+```bash
+# Pull and run the latest image
+docker run -d \
+  --name sub-store \
+  -p 3000:3000 \
+  -v sub-store-data:/app/data \
+  ghcr.io/junqiangwang-1997/sub-store:latest
+
+# Or use docker-compose
+docker-compose -f docker-compose.simple.yml up -d
+```
+
+The Docker image includes:
+- Multi-platform support (linux/amd64, linux/arm64)  
+- Health checks and security optimizations
+- Automatic data persistence
+- Production-ready configuration
+
 ## LICENSE
 
 This project is under the GPL V3 LICENSE.

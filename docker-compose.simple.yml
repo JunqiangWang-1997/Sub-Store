@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  sub-store:
+    image: ghcr.io/junqiangwang-1997/sub-store:latest
+    container_name: sub-store
+    ports:
+      - "3000:3000"
+    volumes:
+      - sub-store-data:/app/data
+    environment:
+      - SUB_STORE_BACKEND_API_PORT=3000
+      - NODE_ENV=production
+      - SUB_STORE_DATA_BASE_PATH=/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "-e", "const http = require('http'); const req = http.request({hostname: 'localhost', port: process.env.SUB_STORE_BACKEND_API_PORT || 3000, path: '/api/utils/env', timeout: 5000}, (res) => process.exit(res.statusCode === 200 ? 0 : 1)); req.on('error', () => process.exit(1)); req.end();"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  sub-store-data:
+    driver: local
