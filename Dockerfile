@@ -31,7 +31,10 @@ RUN addgroup -g 1001 -S nodejs && \
     adduser -S substore -u 1001
 
 # 安装运行时必需的依赖（因为代码中使用了动态require）
-RUN npm install dotenv express body-parser lodash cron nanoid semver undici
+# 使用特定版本避免兼容性问题
+RUN npm install dotenv@16.4.7 express@4.17.1 body-parser@1.19.0 \
+    lodash@4.17.21 cron@3.1.6 nanoid@3.3.3 \
+    semver@7.6.3 undici@7.4.0
 
 # 复制构建产物
 COPY --from=builder --chown=substore:nodejs /app/sub-store.min.js ./
