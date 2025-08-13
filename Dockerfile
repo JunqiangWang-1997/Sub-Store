@@ -30,6 +30,9 @@ WORKDIR /app
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S substore -u 1001
 
+# 安装运行时必需的依赖（因为代码中使用了动态require）
+RUN npm install dotenv express body-parser lodash cron nanoid semver undici
+
 # 复制构建产物
 COPY --from=builder --chown=substore:nodejs /app/sub-store.min.js ./
 COPY --from=builder --chown=substore:nodejs /app/dist ./dist/
