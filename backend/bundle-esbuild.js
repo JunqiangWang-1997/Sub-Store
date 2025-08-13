@@ -13,8 +13,7 @@ const { build } = require('esbuild');
             src: 'src/main.js', 
             dest: 'sub-store.min.js',
             platform: 'node',
-            format: 'cjs',
-            external: ['dotenv', 'express', 'body-parser', 'lodash'] // 保留这些关键依赖为外部模块
+            format: 'cjs'
         },
         {
             src: 'src/products/resource-parser.loon.js',
@@ -50,7 +49,6 @@ const { build } = require('esbuild');
             sourcemap: false,
             platform: artifact.platform || 'browser',
             format: artifact.format || 'iife',
-            external: artifact.external || [],
             outfile: artifact.dest,
         });
     }
